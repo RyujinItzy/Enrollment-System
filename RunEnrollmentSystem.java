@@ -10,6 +10,7 @@ package enrollment;
  */
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -17,7 +18,43 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
+class User {
+    private String username;
+    private String password;
 
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+}
+
+class UserAccountManager {
+    private Map<String, User> users = new HashMap<>();
+
+    public void registerUser(String username, String password) {
+        if (!users.containsKey(username)) {
+            User newUser = new User(username, password);
+            users.put(username, newUser);
+            System.out.println("Registration successful!");
+            System.out.println("-------------------------");
+        } else {
+            System.out.println("Username already exists. Please choose a different username.");
+        }
+    }
+
+    public boolean loginUser(String username, String password) {
+        User user = users.get(username);
+        return user != null && user.getPassword().equals(password);
+    }
+}
 class Student {
     private String studentId;
     private String name;
@@ -60,6 +97,39 @@ class Student {
     public String getProgram() {
         return program;
     }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+    
+    public void setPreviousSchool(String previousSchool)
+    {
+        this.previousSchool = previousSchool;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setProgram(String program) {
+        this.program = program;
+    }
+    
+    @Override
+    public String toString() {
+    return "Student{" +
+            "studentId='" + studentId + '\'' +
+            ", name='" + name + '\'' +
+            ", age=" + age +
+            ", previousSchool='" + previousSchool + '\'' +
+            ", email='" + email + '\'' +
+            ", program='" + program + '\'' +
+            '}';
+}
 }
 
 class Subject {
@@ -73,15 +143,85 @@ class Subject {
         return name;
     }
 
-    // Getter
 }
 
 class EnrollmentSystem {
+    private UserAccountManager userAccountManager = new UserAccountManager();
+    
     private Map<String, Student> students = new HashMap<>();
     private Map<String, List<Subject>> studentSubjects = new HashMap<>();
     private List<Subject> bsitSubjects = new ArrayList<>();
     private List<Subject> bscsSubjects = new ArrayList<>();
 
+    public void runSystem() {
+    Scanner scanner = new Scanner(System.in);
+    intro();
+    System.out.println("-------------------------");
+    System.out.println("Welcome to the STI Enrollment System!");
+    System.out.println("1. Login");
+    System.out.println("2. Register");
+    System.out.print("Choose an option: ");
+
+    int choice;
+
+    while (true) {
+        if (scanner.hasNextInt()) {
+            choice = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline
+
+            if (choice == 1 || choice == 2) {
+                break; // Exit the loop if a valid choice was made
+            } else {
+                System.out.println("Invalid input. Please enter 1 or 2.");
+            }
+        } else {
+            System.out.println("Invalid input. Please enter a number.");
+            scanner.nextLine(); // Consume the invalid input
+        }
+    }
+
+    System.out.println("-------------------------");
+    switch (choice) {
+        case 1:
+            login(scanner);
+            break;
+        case 2:
+            register(scanner);
+            break;
+        default:
+            System.out.println("Invalid choice. Exiting.");
+            break;
+    }
+}
+    
+    private void login(Scanner scanner) {
+        System.out.print("Enter your username: ");
+        String username = scanner.nextLine();
+
+        System.out.print("Enter your password: ");
+        String password = scanner.nextLine();
+
+        if (userAccountManager.loginUser(username, password)) {
+            System.out.println("Login successful!");
+            System.out.println("-------------------------");
+            mainMenu();
+        } else {
+            System.out.println("Login failed. Invalid username or password.");
+            runSystem();
+        }
+    }
+    
+    private void register(Scanner scanner) {
+        System.out.print("Enter a username: ");
+        String username = scanner.nextLine();
+
+        System.out.print("Enter a password: ");
+        String password = scanner.nextLine();
+
+        userAccountManager.registerUser(username, password);
+        runSystem(); // Return to the login/register screen
+    }
+    
     public EnrollmentSystem() {
         // Initialize subjects for each program
         bsitSubjects.add(new Subject("Object Oriented Programming"));
@@ -93,7 +233,7 @@ class EnrollmentSystem {
 
     public void enrollNewStudent(Scanner scanner) {
         
-
+        System.out.println("-------------------------");
         System.out.println("Enter student information:");
 
         // Validate the name input
@@ -156,7 +296,6 @@ class EnrollmentSystem {
             }
         }
 
-        // Generate a unique student ID (you might want to implement a more robust ID generation)
         String studentId = "S" + (students.size() + 1);
 
         // Create and store the new student
@@ -188,7 +327,7 @@ class EnrollmentSystem {
     }
 
     public void enrollOldStudent(Scanner scanner) {
-
+        System.out.println("-------------------------");
         System.out.print("Enter your student ID: ");
         String studentId = scanner.nextLine();
 
@@ -197,6 +336,7 @@ class EnrollmentSystem {
 
             System.out.print("Are you a regular or irregular student? ");
             String enrollmentType = scanner.nextLine();
+            System.out.println("-------------------------");
 
             if (enrollmentType.equalsIgnoreCase("regular")) {
                 enrollStudentInSubjects(oldStudent);
@@ -252,6 +392,7 @@ class EnrollmentSystem {
 
         studentSubjects.put(student.getStudentId(), selectedSubjects);
         System.out.println("Enrollment successful for irregular student.");
+        System.out.println("-------------------------");
         System.out.println("Press 1 to go back to the main menu:");
             int choice;
             while (true) {
@@ -269,9 +410,8 @@ class EnrollmentSystem {
                     System.out.println("Invalid input. Please enter a number.");
                     scanner.nextLine(); // Consume the invalid input
                 }
-
         }
-        
+ 
     }
 
     private void enrollStudentInSubjects(Student student) {
@@ -285,6 +425,7 @@ class EnrollmentSystem {
         }
     }
      public void displayProgramsAndSubjects(Scanner scanner) {
+        System.out.println("-------------------------");
         System.out.println("Programs and Subjects:");
         System.out.println("1. (BSIT) Bachelor of Science in Information Technology");
         System.out.println("   - Object Oriented Programming");
@@ -313,8 +454,8 @@ class EnrollmentSystem {
             }
     }
       public void inquiry(Scanner scanner) {
-        System.out.println("\nPlease wait for a moment...");
-        System.out.print("\nHello :> I can help you with these lists: \n\n[1] About us\n[2] Requirements for new or transferee students\n\n");
+        System.out.println("-------------------------");
+        System.out.print("Hello :> I can help you with these lists: \n\n[1] About us\n[2] Requirements for new or transferee students\n[3] Menu\n\n");
         System.out.print("Please choose an option so I can help you: ");
 
         int choice;
@@ -351,14 +492,15 @@ class EnrollmentSystem {
         }
     }
         private void inquiryAboutUs(Scanner scanner) {
-        System.out.println("\nPlease wait for a moment...");
+        System.out.println("-------------------------");
         System.out.println("STI HISTORY\nFrom its humble beginnings on August 21, 1983 \nas a computer training center with only two campuses, \n" +
                 "STI now has campuses all over the Philippines and has diversified \n" +
                 "into ICT-enhanced programs in Information Technology, \n" +
                 "Business and Management, Tourism and Hospitality Management, \n" +
                 "Engineering, and Arts and Sciences.");
         System.out.println("-------------------------");
-        System.out.println("Press 1 to go back to the main menu:");
+        System.out.println("Press 1 to go back to the inquiry:");
+        System.out.println("Press 2 to go back to the menu:");
             int choice;
             while (true) {
                 if (scanner.hasNextInt()) {
@@ -366,9 +508,13 @@ class EnrollmentSystem {
                     scanner.nextLine(); // Consume the newline
 
                     if (choice == 1) {
+                        inquiry(scanner);
+                        break;
+                    }
+                    else if(choice == 2){
                         mainMenu();
                         break;
-                    } else {
+                    }else {
                         System.out.println("\nOops! That is not in the option; please try to choose again. :>");
                     }
                 } else {
@@ -378,10 +524,9 @@ class EnrollmentSystem {
             }
     }
     
-
     private void requirements(Scanner scanner){
-        System.out.println("\nPlease wait for a moment...");
-        System.out.println("\nAre you a new student or transferee student? :>\n[1] New student\n[2] Transferee student\n[3] Main Menu");
+        System.out.println("-------------------------");
+        System.out.println("Are you a new student or transferee student? :>\n[1] New student\n[2] Transferee student\n[3] Inquiry\n[4] Menu");
         System.out.print("\nPlease choose an option: ");
 
         int choice;
@@ -402,6 +547,10 @@ class EnrollmentSystem {
                         break;
                     case 3:
                         System.out.println("\nPlease wait for a moment...");
+                        inquiry(scanner);
+                        break;
+                    case 4:
+                        System.out.println("\nPlease wait for a moment...");
                         mainMenu();
                         break;
                     default:
@@ -409,10 +558,73 @@ class EnrollmentSystem {
                         break;
                 }
 
-                if (choice >= 1 && choice <= 3) {
+                if (choice >= 1 && choice <= 4) {
                     break; // Exit the loop if a valid choice was made
                 } else {
-                    System.out.println("Invalid input. Please enter a number between 1 and 3.");
+                    System.out.println("Invalid input. Please enter a number between 1 and 4.");
+                }
+            } else {
+                System.out.println("Invalid input. Please enter a number.");
+                scanner.nextLine(); // Consume the invalid input
+            }
+        }
+    }
+    
+        private void newStudentRequirements(Scanner scanner) {
+          System.out.println("-------------------------");
+          System.out.println("Here are the requirements for new students :>\n\n" +
+                  "- Original Form 138 / SF9-SHS (Learner's Progress Report Card)\n" +
+                  "- Original Form 137 / SF10-SHS (Learner's Permanent Academic Record)\n" +
+                  "- PSA Issued Birth Certificate");
+          System.out.println("-------------------------");
+          System.out.println("Press 1 to go back to the requirements:");
+          System.out.println("Press 2 to go back to the menu:");
+          int choice;
+
+          while (true) {
+              if (scanner.hasNextInt()) {
+                  choice = scanner.nextInt();
+                  scanner.nextLine(); // Consume the newline
+
+                  if (choice == 1) {
+                      requirements(scanner);
+                      break;
+                  } else if (choice == 2) {
+                      mainMenu();
+                      break;
+                  } else {
+                      System.out.println("\nOops! That is not in the option; please try to choose again. :>");
+                  }
+              } else {
+                  System.out.println("Invalid input. Please enter a number.");
+                  scanner.nextLine(); // Consume the invalid input
+              }
+          }
+      }
+
+        private void transfereeStudentRequirements(Scanner scanner) {
+        System.out.println("Here are the requirements for transferee students:" +
+                "- Certificate of Transfer (Honorable Dismissal)\n" +
+                "- Official Transcript of Records\n" +
+                "- PSA Issued Birth Certificate");
+        System.out.println("-------------------------");
+        System.out.println("Press 1 to go back to the requirements:");
+        System.out.println("Press 2 to go back to the main menu:");
+        int choice;
+
+        while (true) {
+            if (scanner.hasNextInt()) {
+                choice = scanner.nextInt();
+                scanner.nextLine(); // Consume the newline
+
+                if (choice == 1) {
+                    requirements(scanner);
+                    break;
+                } else if (choice == 2) {
+                    mainMenu();
+                    break;
+                } else {
+                    System.out.println("\nOops! That is not in the option; please try to choose again. :>");
                 }
             } else {
                 System.out.println("Invalid input. Please enter a number.");
@@ -421,61 +633,9 @@ class EnrollmentSystem {
         }
     }
 
-    private void newStudentRequirements(Scanner scanner) {
-
-        System.out.println("\nHere are the requirements for new students :>\n\n" +
-                "- Original Form 138 / SF9-SHS (Learner's Progress Report Card)\n" +
-                "- Original Form 137 / SF10-SHS (Learner's Permanent Academic Record)\n" +
-                "- PSA Issued Birth Certificate");
-            System.out.println("-------------------------");
-            System.out.println("Press 1 to go back to the main menu:");
-            int choice;
-            while (true) {
-                if (scanner.hasNextInt()) {
-                    choice = scanner.nextInt();
-                    scanner.nextLine(); // Consume the newline
-
-                    if (choice == 1) {
-                        mainMenu();
-                        break;
-                    } else {
-                        System.out.println("\nOops! That is not in the option; please try to choose again. :>");
-                    }
-                } else {
-                    System.out.println("Invalid input. Please enter a number.");
-                    scanner.nextLine(); // Consume the invalid input
-                }
-            }
-    }
-
-    private void transfereeStudentRequirements(Scanner scanner) {
-        System.out.println("Here are the requirements for transferee students:" +
-                "- Certificate of Transfer (Honorable Dismissal)\n" +
-                "- Official Transcript of Records\n" +
-                "- PSA Issued Birth Certificate");
-            System.out.println("-------------------------");
-            System.out.println("Press 1 to go back to the main menu:");
-            int choice;
-            while (true) {
-                if (scanner.hasNextInt()) {
-                    choice = scanner.nextInt();
-                    scanner.nextLine(); // Consume the newline
-
-                    if (choice == 1) {
-                        mainMenu();
-                        break;
-                    } else {
-                        System.out.println("\nOops! That is not in the option; please try to choose again. :>");
-                    }
-                } else {
-                    System.out.println("Invalid input. Please enter a number.");
-                    scanner.nextLine(); // Consume the invalid input
-                }
-            }
-    }
-
     public void studentDatabase(Scanner scanner) {
     System.out.println("Enrolled Students by Program:");
+    System.out.println("-------------------------");
 
     for (Map.Entry<String, Student> entry : students.entrySet()) {
         Student student = entry.getValue();
@@ -510,6 +670,7 @@ class EnrollmentSystem {
 }
 
     public void showStudentsEnrolledByProgram(Scanner scanner) {
+        System.out.println("-------------------------");
         System.out.println("Students Enrolled by Program:");
 
         Set<String> allPrograms = new HashSet<>(Arrays.asList("BSIT", "BSCS")); // Add more programs if needed
@@ -551,6 +712,7 @@ class EnrollmentSystem {
     }
 
     public void showStudentsEnrolledBySubjects(Scanner scanner) {
+        System.out.println("-------------------------");
         System.out.println("Students Enrolled by Subjects:");
         Set<String> allSubjects = new HashSet<>(Arrays.asList("Object Oriented Programming", "Data Structures and Algorithms"));
         Map<String, Integer> enrolledCountBySubjects = new HashMap<>();
@@ -588,8 +750,139 @@ class EnrollmentSystem {
                 }
             }
         }
+        public void editStudentInformation(Scanner scanner) {
+        System.out.println("-------------------------");
+        System.out.print("Enter student ID to edit information: ");
+        String studentId = scanner.nextLine();
 
+        if (students.containsKey(studentId)) {
+            Student student = students.get(studentId);
+            System.out.println("Current Information:");
+            displayStudentInformation(student);
 
+            System.out.println("Enter new information:");
+
+            
+            System.out.print("Name: ");
+            String newName;
+            while (true) {
+                newName = scanner.nextLine();
+
+                // Check if the name contains only letters
+                if (newName.matches("[a-zA-Z]+")) {
+                    break;  // Exit the loop if the input is valid
+                } else {
+                    System.out.println("Invalid input. Please enter only letters for the name.");
+                }
+            }
+
+            System.out.print("Age: ");
+            int newAge;
+            while (true) {
+                if (scanner.hasNextInt()) {
+                    newAge = scanner.nextInt();
+                    scanner.nextLine(); // Consume the newline
+                    break;
+                } else {
+                    System.out.println("Invalid input. Please enter a valid number for age.");
+                    scanner.nextLine(); // Consume the invalid input
+                }
+            }
+            System.out.print("Previous School: ");
+            String newPreviousSchool = scanner.nextLine();
+
+            // For Email
+            String newEmail;
+            while (true) {
+                System.out.print("Email: ");
+                newEmail = scanner.nextLine();
+
+                // Check if the email has a basic valid format
+                if (newEmail.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")) {
+                    break;  // Exit the loop if the input is valid
+                } else {
+                    System.out.println("Invalid input. Please enter a valid email address.");
+                }
+            }
+
+            // For Program
+            String newProgram;
+            while (true) {
+                System.out.print("Program (BSIT or BSCS): ");
+                newProgram = scanner.nextLine();
+
+                // Check if the program is either BSIT or BSCS (case-insensitive)
+                if (newProgram.equalsIgnoreCase("BSIT") || newProgram.equalsIgnoreCase("BSCS")) {
+                    break;  // Exit the loop if the input is valid
+                } else {
+                    System.out.println("Invalid input. Please enter BSIT or BSCS.");
+                }
+            }
+
+            // Update student information
+                student.setName(newName);
+                student.setAge(newAge);
+                student.setPreviousSchool(newPreviousSchool);
+                student.setEmail(newEmail);
+                student.setProgram(newProgram);
+
+                System.out.println("Student information updated successfully.");
+                System.out.println("-------------------------");
+            } else {
+                System.out.println("Student ID not found.");
+            }
+            }
+        
+        private void displayStudentInformation(Student student) 
+        {
+        System.out.println("Name: " + student.getName());
+        System.out.println("Age: " + student.getAge());
+        System.out.println("Previous School: " + student.getPreviousSchool());
+        System.out.println("Email: " + student.getEmail());
+        System.out.println("Program: " + student.getProgram());
+        }
+        
+        public void removeStudent(Scanner scanner) {
+        System.out.println("-------------------------");
+        System.out.print("Enter the student ID to remove: ");
+        String studentIdToRemove = scanner.nextLine();
+
+        if (students.containsKey(studentIdToRemove)) {
+            Student removedStudent = students.remove(studentIdToRemove);
+            studentSubjects.remove(studentIdToRemove);
+
+            System.out.println("Student removed successfully:");
+            System.out.println("Student ID: " + removedStudent.getStudentId());
+            System.out.println("Name: " + removedStudent.getName());
+            System.out.println("Age: " + removedStudent.getAge());
+            System.out.println("Previous School: " + removedStudent.getPreviousSchool());
+            System.out.println("Email: " + removedStudent.getEmail());
+            System.out.println("Program: " + removedStudent.getProgram());
+            System.out.println("Enrolled Subjects: " + studentSubjects.getOrDefault(studentIdToRemove, Collections.emptyList()));
+        } else {
+            System.out.println("Student ID not found. Unable to remove.");
+        }
+
+        System.out.println("-------------------------");
+        System.out.println("Press 1 to go back to the main menu:");
+        int choice;
+        while (true) {
+            if (scanner.hasNextInt()) {
+                choice = scanner.nextInt();
+                scanner.nextLine(); // Consume the newline
+
+                if (choice == 1) {
+                    mainMenu();
+                    break;
+                } else {
+                    System.out.println("\nOops! That is not in the option; please try to choose again. :>");
+                }
+            } else {
+                System.out.println("Invalid input. Please enter a number.");
+                scanner.nextLine(); // Consume the invalid input
+            }
+        }
+    }
 
     // Getters for testing purposes
     public Map<String, Student> getStudents() {
@@ -599,10 +892,13 @@ class EnrollmentSystem {
     public Map<String, List<Subject>> getStudentSubjects() {
         return studentSubjects;
     }
-    public void mainMenu() {
+    public void mainMenu() 
+    {
     Scanner scanner = new Scanner(System.in);
+    intro();
     while (true) {
-    System.out.println("Hogwarts Enrollment System");
+    System.out.println("-------------------------");
+    System.out.println("STI Enrollment System");
     System.out.println("1. Enroll New Student");
     System.out.println("2. Enroll Old Student");
     System.out.println("3. Show Programs and Subjects");
@@ -610,7 +906,9 @@ class EnrollmentSystem {
     System.out.println("5. Show Students Enrolled by Program");
     System.out.println("6. Show Students Enrolled by Subjects");
     System.out.println("7. Inquiry");
-    System.out.println("8. Exit");
+    System.out.println("8. Edit Student Information");
+    System.out.println("9. Remove Student");
+    System.out.println("10. Exit");
     System.out.print("Choose an option: ");
 
     if (scanner.hasNextInt()) {
@@ -640,6 +938,11 @@ class EnrollmentSystem {
                 inquiry(scanner);
                 break;
             case 8:
+                editStudentInformation(scanner);
+                break;
+            case 9:
+                removeStudent(scanner);
+            case 10:
                 System.exit(0);
                 break;
             default:
@@ -649,15 +952,49 @@ class EnrollmentSystem {
         System.out.println("Invalid input. Please enter a number.");
         scanner.nextLine(); // Consume the invalid input
     }
-}
-}
+    }
+    }
+    public void intro()
+    {
+        System.out.println("  /$$$$$$  /$$$$$$$$ /$$$$$$                                                                           \n" +
+" /$$__  $$|__  $$__/|_  $$_/                                                                           \n" +
+"| $$  \\__/   | $$     | $$                                                                             \n" +
+"|  $$$$$$    | $$     | $$                                                                             \n" +
+" \\____  $$   | $$     | $$                                                                             \n" +
+" /$$  \\ $$   | $$     | $$                                                                             \n" +
+"|  $$$$$$/   | $$    /$$$$$$                                                                           \n" +
+" \\______/    |__/   |______/                                                                           \n" +
+"                                                                                                       \n" +
+"                                                                                                       \n" +
+"                                                                                                       \n" +
+" /$$$$$$$$ /$$   /$$ /$$$$$$$   /$$$$$$  /$$       /$$       /$$      /$$ /$$$$$$$$ /$$   /$$ /$$$$$$$$\n" +
+"| $$_____/| $$$ | $$| $$__  $$ /$$__  $$| $$      | $$      | $$$    /$$$| $$_____/| $$$ | $$|__  $$__/\n" +
+"| $$      | $$$$| $$| $$  \\ $$| $$  \\ $$| $$      | $$      | $$$$  /$$$$| $$      | $$$$| $$   | $$   \n" +
+"| $$$$$   | $$ $$ $$| $$$$$$$/| $$  | $$| $$      | $$      | $$ $$/$$ $$| $$$$$   | $$ $$ $$   | $$   \n" +
+"| $$__/   | $$  $$$$| $$__  $$| $$  | $$| $$      | $$      | $$  $$$| $$| $$__/   | $$  $$$$   | $$   \n" +
+"| $$      | $$\\  $$$| $$  \\ $$| $$  | $$| $$      | $$      | $$\\  $ | $$| $$      | $$\\  $$$   | $$   \n" +
+"| $$$$$$$$| $$ \\  $$| $$  | $$|  $$$$$$/| $$$$$$$$| $$$$$$$$| $$ \\/  | $$| $$$$$$$$| $$ \\  $$   | $$   \n" +
+"|________/|__/  \\__/|__/  |__/ \\______/ |________/|________/|__/     |__/|________/|__/  \\__/   |__/   \n" +
+"                                                                                                       \n" +
+"                                                                                                       \n" +
+"                                                                                                       \n" +
+"  /$$$$$$  /$$     /$$ /$$$$$$  /$$$$$$$$ /$$$$$$$$ /$$      /$$                                       \n" +
+" /$$__  $$|  $$   /$$//$$__  $$|__  $$__/| $$_____/| $$$    /$$$                                       \n" +
+"| $$  \\__/ \\  $$ /$$/| $$  \\__/   | $$   | $$      | $$$$  /$$$$                                       \n" +
+"|  $$$$$$   \\  $$$$/ |  $$$$$$    | $$   | $$$$$   | $$ $$/$$ $$                                       \n" +
+" \\____  $$   \\  $$/   \\____  $$   | $$   | $$__/   | $$  $$$| $$                                       \n" +
+" /$$  \\ $$    | $$    /$$  \\ $$   | $$   | $$      | $$\\  $ | $$                                       \n" +
+"|  $$$$$$/    | $$   |  $$$$$$/   | $$   | $$$$$$$$| $$ \\/  | $$                                       \n" +
+" \\______/     |__/    \\______/    |__/   |________/|__/     |__/                                       \n" +
+"                                                                     ");
+    }
     
 }
 
 public class RunEnrollmentSystem {
     public static void main(String[] args) {
         EnrollmentSystem enrollmentSystem = new EnrollmentSystem();
-        enrollmentSystem.mainMenu();
+        enrollmentSystem.runSystem();
 
     }
 }
