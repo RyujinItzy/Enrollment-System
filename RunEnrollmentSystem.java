@@ -153,6 +153,7 @@ class EnrollmentSystem {
     private List<Subject> bsitSubjects = new ArrayList<>();
     private List<Subject> bscsSubjects = new ArrayList<>();
 
+
     public void runSystem() {
     Scanner scanner = new Scanner(System.in);
     intro();
@@ -160,6 +161,7 @@ class EnrollmentSystem {
     System.out.println("Welcome to the STI Enrollment System!");
     System.out.println("1. Login");
     System.out.println("2. Register");
+    System.out.println("3. Exit");
     System.out.print("Choose an option: ");
 
     int choice;
@@ -169,10 +171,10 @@ class EnrollmentSystem {
             choice = scanner.nextInt();
             scanner.nextLine(); // Consume the newline
 
-            if (choice == 1 || choice == 2) {
+            if (choice >= 1 && choice <= 3) {
                 break; // Exit the loop if a valid choice was made
             } else {
-                System.out.println("Invalid input. Please enter 1 or 2.");
+                System.out.println("Invalid input. Please enter 1, 2, or 3.");
             }
         } else {
             System.out.println("Invalid input. Please enter a number.");
@@ -187,6 +189,10 @@ class EnrollmentSystem {
             break;
         case 2:
             register(scanner);
+            break;
+        case 3:
+            System.out.println("Exiting the STI Enrollment System. Goodbye!");
+            System.exit(0); // Terminate the program
             break;
         default:
             System.out.println("Invalid choice. Exiting.");
@@ -221,6 +227,7 @@ class EnrollmentSystem {
         userAccountManager.registerUser(username, password);
         runSystem(); // Return to the login/register screen
     }
+    
     
     public EnrollmentSystem() {
         // Initialize subjects for each program
@@ -908,7 +915,7 @@ class EnrollmentSystem {
     System.out.println("7. Inquiry");
     System.out.println("8. Edit Student Information");
     System.out.println("9. Remove Student");
-    System.out.println("10. Exit");
+    System.out.println("10. Log out");
     System.out.print("Choose an option: ");
 
     if (scanner.hasNextInt()) {
@@ -943,7 +950,7 @@ class EnrollmentSystem {
             case 9:
                 removeStudent(scanner);
             case 10:
-                System.exit(0);
+                runSystem();
                 break;
             default:
                 System.out.println("Invalid choice. Please try again.");
@@ -995,6 +1002,5 @@ public class RunEnrollmentSystem {
     public static void main(String[] args) {
         EnrollmentSystem enrollmentSystem = new EnrollmentSystem();
         enrollmentSystem.runSystem();
-
     }
 }
