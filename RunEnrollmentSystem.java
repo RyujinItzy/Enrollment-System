@@ -152,6 +152,7 @@ class EnrollmentSystem {
     private Map<String, List<Subject>> studentSubjects = new HashMap<>();
     private List<Subject> bsitSubjects = new ArrayList<>();
     private List<Subject> bscsSubjects = new ArrayList<>();
+    private int studentIdCounter = 0;
 
 
     public void runSystem() {
@@ -302,8 +303,9 @@ class EnrollmentSystem {
                 System.out.println("Invalid input. Please enter BSIT or BSCS.");
             }
         }
-
-        String studentId = "S" + (students.size() + 1);
+        studentIdCounter++;
+        String studentId = generateStudentId();
+        
 
         // Create and store the new student
         Student newStudent = new Student(studentId, name, age, previousSchool, email, program);
@@ -331,6 +333,9 @@ class EnrollmentSystem {
                     scanner.nextLine(); // Consume the invalid input
                 }
             }
+    }
+     private String generateStudentId() {
+        return "S" + studentIdCounter;
     }
 
     public void enrollOldStudent(Scanner scanner) {
