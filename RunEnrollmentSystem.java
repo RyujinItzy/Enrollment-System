@@ -36,22 +36,42 @@ class Subject {
  class Student {
     private String studentId;
     private String firstName;
-    private String middleInitial;
     private String lastName;
+    private String middleInitial;
     private int age;
+    private String bday;
+    private String address;
     private String previousSchool;
+    private String mobileNumber;
     private String email;
+    private String guardianFirstName;
+    private String guardianLastName;
+    private String guardianMiddleInitial;
+    private String guardianNumber;
+    private String guardianEmail;
     private String program;
+    private String enrollmentType1;
+    
 
-    public Student(String studentId, String firstName, String middleInitial, String lastName, int age, String previousSchool, String email, String program) {
+    public Student(String studentId, String firstName, String lastName,String middleInitial, int age, String bday, String address, String previousSchool, String mobileNumber,
+            String email, String guardianFirstName, String guardianLastName, String guardianMiddleInitial, String guardianNumber, String guardianEmail, String program, String enrollmentType1) {
         this.studentId = studentId;
         this.firstName = firstName;
-        this.middleInitial = middleInitial;
         this.lastName = lastName;
+        this.middleInitial = middleInitial;
         this.age = age;
+        this.bday = bday;
+        this.address = address;
         this.previousSchool = previousSchool;
+        this.mobileNumber = mobileNumber;
         this.email = email;
+        this.guardianFirstName = guardianFirstName;
+        this.guardianLastName = guardianLastName;
+        this.guardianMiddleInitial = guardianMiddleInitial;
+        this.guardianNumber = guardianNumber;
+        this.guardianEmail = guardianEmail;
         this.program = program;
+        this.enrollmentType1 = enrollmentType1;
     }
 
     // Getters and setters
@@ -64,56 +84,114 @@ class Subject {
         return firstName;
     }
 
-    public String getMiddleInitial() {
-        return middleInitial;
-    }
 
     public String getLastName() {
         return lastName;
+    }
+        public String getMiddleInitial() {
+        return middleInitial;
     }
 
     public int getAge() {
         return age;
     }
+    
+    public String getBday(){
+        return bday;
+    }
+    public String getAddress(){
+        return address;
+    }
 
     public String getPreviousSchool() {
         return previousSchool;
+    }
+    public String getMobileNumber(){
+        return mobileNumber;
     }
 
     public String getEmail() {
         return email;
     }
+    public String getGuardianFirstName(){
+        return guardianFirstName;
+    }
+    public String getGuardianLastName(){
+        return guardianLastName;
+    }
+    public String getGuardianMiddleInitial(){
+        return guardianMiddleInitial;
+    }
+    public String getGuardianNumber(){
+        return guardianNumber;
+    }
+    public String getGuardianEmail(){
+        return guardianEmail;
+    }
 
     public String getProgram() {
         return program;
+    }
+    
+    public String getEnrollmentType(){
+        return enrollmentType1;
     }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    public void setMiddleInitial(String middleInitial) {
-        this.middleInitial = middleInitial;
-    }
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+        public void setMiddleInitial(String middleInitial) {
+        this.middleInitial = middleInitial;
+    }
+
 
     public void setAge(int age) {
         this.age = age;
+    }
+    public void setBday(String bday){
+        this.bday = bday;
+    }
+    public void setAddress(String address){
+        this.address = address;
     }
 
     public void setPreviousSchool(String previousSchool) {
         this.previousSchool = previousSchool;
     }
+    public void setMobileNumber(String mobileNumber){
+        this.mobileNumber = mobileNumber;
+    }
 
     public void setEmail(String email) {
         this.email = email;
     }
+    public void setGuardianFirstName(String guardianFirstName){
+        this.guardianFirstName = guardianFirstName;
+    }
+    public void setGuardianLastName(String guardianLastName){
+        this.guardianLastName = guardianLastName;
+    }
+    public void setGuardianMiddleInitial(String guardianMiddleInaitial){
+        this.guardianMiddleInitial = guardianMiddleInitial;
+    }
+    public void setGuardianNumber(String guardianNumber){
+        this.guardianNumber = guardianNumber;
+    }
+    public void setGuardianEmail(String guardianEmail){
+        this.guardianEmail = guardianEmail;
+    }
 
     public void setProgram(String program) {
         this.program = program;
+    }
+    
+    public void setEnrollmentType(String enrollmentType){
+        this.enrollmentType1 = enrollmentType;
     }
 
     @Override
@@ -121,12 +199,21 @@ class Subject {
         return "Student{" +
                 "studentId='" + studentId + '\'' +
                 ", firstName='" + firstName + '\'' +
-                ", middleInitial='" + middleInitial + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", age=" + age +
+                ", middleInitial='" + middleInitial + '\'' +
+                ", age='" + age +
+                 ", bday='" + bday + '\'' +
+                 ", address='" + address + '\'' +
                 ", previousSchool='" + previousSchool + '\'' +
+                 ", mobileNumber='" + mobileNumber + '\'' +
                 ", email='" + email + '\'' +
-                ", program='" + program + '\'' +
+                 ", guardianFirstName='" + guardianFirstName + '\'' +
+                ", guardianLastName='" + guardianLastName + '\'' +
+                ", guardianMiddleInitial='" + guardianMiddleInitial + '\'' +
+                 ", guardianNumber='" + guardianNumber + '\'' +
+                 ", guardianEmail='" + guardianEmail + '\'' +
+                ", program='" + program + '\'' + 
+                ", enrollment Type ='"+enrollmentType1+'\''+
                 '}';
     }
 }
@@ -239,11 +326,46 @@ class EnrollmentSystem {
             }
         }
 
+        String birthday;
+        while (true) {
+            System.out.print("Birthday (YYYY-MM-DD): ");
+            birthday = scanner.nextLine();
+
+            // Check if the input matches the desired format (YYYY-MM-DD)
+            if (birthday.matches("\\d{4}-\\d{2}-\\d{2}")) {
+                break;  // Exit the loop if the input is valid
+            } else {
+                System.out.println("Invalid input. Please enter the birthday in the format YYYY-MM-DD.");
+            }
+        }
+        
+        String address;
+        while (true) {
+            System.out.print("Address: ");
+            address = scanner.nextLine();
+                break;  // Exit the loop if the input is valid
+        }
+        
+        
+
         // Validate the previous school input (allow any characters)
         System.out.print("Previous School: ");
         String previousSchool = scanner.nextLine();
 
         // Validate the email input (basic email format validation)
+        String mobileNumber;
+        while (true) {
+            System.out.print("Mobile Number (XXX-XXX-XXXX): ");
+            mobileNumber= scanner.nextLine();
+
+            // Check if the input matches the desired format (XXX-XXX-XXXX)
+            if (mobileNumber.matches("\\d{3}-\\d{3}-\\d{4}")) {
+                break;  // Exit the loop if the input is valid
+            } else {
+                System.out.println("Invalid input. Please enter the mobile number in the format XXX-XXX-XXXX.");
+            }
+        }
+
         String email;
         while (true) {
             System.out.print("Email: ");
@@ -251,6 +373,68 @@ class EnrollmentSystem {
 
             // Check if the email has a basic valid format
             if (email.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")) {
+                break;  // Exit the loop if the input is valid
+            } else {
+                System.out.println("Invalid input. Please enter a valid email address.");
+            }
+        }
+        
+        String guardianFirstName;
+        while (true) {
+            System.out.print("Guardian's First Name: ");
+            guardianFirstName = scanner.nextLine();
+
+            // Check if the name contains only letters
+            if (guardianFirstName.matches("[a-zA-Z]+")) {
+                break;  // Exit the loop if the input is valid
+            } else {
+                System.out.println("Invalid input. Please enter only letters for the first name.");
+            }
+        }
+        String guardianLastName;
+        while (true) {
+            System.out.print("Guardian's Last Name: ");
+            guardianLastName = scanner.nextLine();
+
+            // Check if the name contains only letters
+            if (guardianLastName.matches("[a-zA-Z]+")) {
+                break;  // Exit the loop if the input is valid
+            } else {
+                System.out.println("Invalid input. Please enter only letters for the last name.");
+            }
+        }
+        String guardianMiddleInitial;
+        while (true) {
+            System.out.print("Guardian's Middle Initial (one capital letter): ");
+            guardianMiddleInitial = scanner.nextLine();
+
+            if (guardianMiddleInitial.matches("[a-zA-Z]+")) {
+                break;  // Exit the loop if the input is valid
+            } else {
+                System.out.println("Invalid input. Please enter a single capital letter for the middle initial.");
+            }
+        }
+        
+        String guardianNumber;
+        while (true) {
+            System.out.print("Guardian's Mobile Number (XXX-XXX-XXXX): ");
+            guardianNumber= scanner.nextLine();
+
+            // Check if the input matches the desired format (XXX-XXX-XXXX)
+            if (guardianNumber.matches("\\d{3}-\\d{3}-\\d{4}")) {
+                break;  // Exit the loop if the input is valid
+            } else {
+                System.out.println("Invalid input. Please enter the mobile number in the format XXX-XXX-XXXX.");
+            }
+        }
+        
+        String guardianEmail;
+        while (true) {
+            System.out.print("Guardian's Email: ");
+            guardianEmail = scanner.nextLine();
+
+            // Check if the email has a basic valid format
+            if (guardianEmail.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")) {
                 break;  // Exit the loop if the input is valid
             } else {
                 System.out.println("Invalid input. Please enter a valid email address.");
@@ -276,12 +460,15 @@ class EnrollmentSystem {
         
         System.out.print("Are you a regular (R) or irregular (I) student? ");
         String enrollmentType = scanner.nextLine().toUpperCase(); // Convert to uppercase for case-insensitivity
+        
         System.out.println("-------------------------");
         
             if (enrollmentType.equals("R")) {
+            enrollmentType = "Regular";
             studentIdCounter++;
             String studentId = generateStudentId();
-            Student newStudent = new Student(studentId, firstName,middleInitial, lastName, age, previousSchool, email, program);
+            Student newStudent = new Student(studentId, firstName,lastName, middleInitial, age, birthday, address, previousSchool, mobileNumber, email,
+                    guardianFirstName, guardianLastName, guardianMiddleInitial, guardianNumber, guardianEmail, program, enrollmentType);
             students.put(studentId, newStudent);
             enrollStudentInSubjects(newStudent);
             System.out.println("Enrollment successful. Student ID: " + studentId);
@@ -306,11 +493,12 @@ class EnrollmentSystem {
                 }
             }
         } else if (enrollmentType.equals("I")) {
-            
+            enrollmentType = "Irregular";
             studentIdCounter++;
             String studentId = generateStudentId();
-            Student newStudent = new Student(studentId, firstName,middleInitial, lastName, age, previousSchool, email, program);
-            students.put(studentId, newStudent);
+            Student newStudent = new Student(studentId, firstName,lastName, middleInitial, age, birthday, address, previousSchool, mobileNumber, email,
+                    guardianFirstName, guardianLastName, guardianMiddleInitial, guardianNumber, guardianEmail, program, enrollmentType);
+            students.put(studentId, newStudent); 
             enrollStudentInSubjects(newStudent);
             enrollOldStudentIrregular(newStudent, scanner);
         } else {
@@ -333,6 +521,7 @@ class EnrollmentSystem {
         System.out.println("-------------------------");
 
         if (enrollmentType.equals("R")) {
+            enrollmentType = "Regular";
             enrollStudentInSubjects(oldStudent);
             System.out.println("Enrollment successful for regular student.");
             System.out.println("-------------------------");
@@ -355,6 +544,7 @@ class EnrollmentSystem {
                 }
             }
         } else if (enrollmentType.equals("I")) {
+            enrollmentType = "Irregular";
             enrollOldStudentIrregular(oldStudent, scanner);
         } else {
             System.out.println("Invalid enrollment type. Please enter 'R' for regular or 'I' for irregular.");
@@ -454,8 +644,8 @@ class EnrollmentSystem {
     }
      public void displayProgramsAndSubjects(Scanner scanner) {
         System.out.println("-------------------------");
+        System.out.println("Programs and Subjects Offered:");
         System.out.println("Information and Communications technology:");
-        System.out.println("Tourism Management");
         System.out.println("1. (BSIT) Bachelor of Science in Information Technology");
         System.out.println("   - Object Oriented Programming");
         System.out.println("   - Data Structures and Algorithms");
@@ -779,8 +969,17 @@ class EnrollmentSystem {
         System.out.println("Last Name: " + student.getLastName());
         System.out.println("Middle Initial: " + student.getMiddleInitial());
         System.out.println("Age: " + student.getAge());
+        System.out.println("Birth day: " + student.getBday());
+        System.out.println("Address: " + student.getAddress());
         System.out.println("Previous School: " + student.getPreviousSchool());
+        System.out.println("Mobile Number: " + student.getMobileNumber());
         System.out.println("Email: " + student.getEmail());
+        System.out.println("Guardian's First Name: " + student.getGuardianFirstName());
+        System.out.println("Guardian's Last Name: " + student.getGuardianLastName());
+        System.out.println("Guardian's Middle Initial: " + student.getGuardianMiddleInitial());
+        System.out.println("Guardian's Mobile Number: " + student.getGuardianNumber());
+        System.out.println("Guardian's Email: " + student.getGuardianEmail());
+        System.out.println("Enrollment Type: " + student.getEnrollmentType());
         System.out.println("Program: " + student.getProgram());
         System.out.println("Enrolled Subjects: " + studentSubjects.get(student.getStudentId()));
         System.out.println("-------------------------");
@@ -928,12 +1127,12 @@ class EnrollmentSystem {
                 }
             }
             System.out.print("Middle Initial (one capital letter): ");
-            String middleInitial;
+            String newMiddleInitial;
             while (true) {
-                middleInitial = scanner.nextLine();
+                newMiddleInitial = scanner.nextLine();
 
                 // Check if the input is a single capital letter
-                if (middleInitial.matches("[a-zA-Z]+")) {
+                if (newMiddleInitial.matches("[a-zA-Z]+")) {
                     break;  // Exit the loop if the input is valid
                 } else {
                     System.out.println("Invalid input. Please enter a single capital letter for the middle initial.");
@@ -952,9 +1151,42 @@ class EnrollmentSystem {
                     scanner.nextLine(); // Consume the invalid input
                 }
             }
+          String newBirthday;
+        while (true) {
+            System.out.print("Birthday (YYYY-MM-DD): ");
+            newBirthday = scanner.nextLine();
+
+            // Check if the input matches the desired format (YYYY-MM-DD)
+            if (newBirthday.matches("\\d{4}-\\d{2}-\\d{2}")) {
+                break;  // Exit the loop if the input is valid
+            } else {
+                System.out.println("Invalid input. Please enter the birthday in the format YYYY-MM-DD.");
+            }
+        }
+        
+        String newAddress;
+        while (true) {
+            System.out.print("Address: ");
+            newAddress = scanner.nextLine();
+
+                break;  // Exit the loop if the input is valid
+ 
+        }
             System.out.print("Previous School: ");
             String newPreviousSchool = scanner.nextLine();
+            
+        String newMobileNumber;
+        while (true) {
+            System.out.print("Mobile Number (XXX-XXX-XXXX): ");
+            newMobileNumber= scanner.nextLine();
 
+            // Check if the input matches the desired format (XXX-XXX-XXXX)
+            if (newMobileNumber.matches("\\d{3}-\\d{3}-\\d{4}")) {
+                break;  // Exit the loop if the input is valid
+            } else {
+                System.out.println("Invalid input. Please enter the mobile number in the format XXX-XXX-XXXX.");
+            }
+        }
             // For Email
             String newEmail;
             while (true) {
@@ -968,6 +1200,69 @@ class EnrollmentSystem {
                     System.out.println("Invalid input. Please enter a valid email address.");
                 }
             }
+            
+            String newGuardianFirstName;
+        while (true) {
+            System.out.print("Guardian's First Name: ");
+            newGuardianFirstName = scanner.nextLine();
+
+            // Check if the name contains only letters
+            if (newGuardianFirstName.matches("[a-zA-Z]+")) {
+                break;  // Exit the loop if the input is valid
+            } else {
+                System.out.println("Invalid input. Please enter only letters for the guardian's first name.");
+            }
+        }
+        String newGuardianLastName;
+        while (true) {
+            System.out.print("Guardian's Last Name: ");
+            newGuardianLastName = scanner.nextLine();
+
+            // Check if the name contains only letters
+            if (newGuardianLastName.matches("[a-zA-Z]+")) {
+                break;  // Exit the loop if the input is valid
+            } else {
+                System.out.println("Invalid input. Please enter only letters for the guardian's last name.");
+            }
+        }
+        String newGuardianMiddleInitial;
+        while (true) {
+            System.out.print("Guardian's Middle Initial (one capital letter): ");
+            newGuardianMiddleInitial = scanner.nextLine();
+
+            if (newGuardianMiddleInitial.matches("[a-zA-Z]+")) {
+                break;  // Exit the loop if the input is valid
+            } else {
+                System.out.println("Invalid input. Please enter a single capital letter for the guardian's middle initial.");
+            }
+        }
+        
+        String newGuardianNumber;
+        while (true) {
+            System.out.print("Guardian's Mobile Number (XXX-XXX-XXXX): ");
+            newGuardianNumber= scanner.nextLine();
+
+            // Check if the input matches the desired format (XXX-XXX-XXXX)
+            if (newGuardianNumber.matches("\\d{3}-\\d{3}-\\d{4}")) {
+                break;  // Exit the loop if the input is valid
+            } else {
+                System.out.println("Invalid input. Please enter the mobile number in the format XXX-XXX-XXXX.");
+            }
+        }
+        
+        String newGuardianEmail;
+        while (true) {
+            System.out.print("Guardian's Email: ");
+            newGuardianEmail = scanner.nextLine();
+
+            // Check if the email has a basic valid format
+            if (newGuardianEmail.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")) {
+                break;  // Exit the loop if the input is valid
+            } else {
+                System.out.println("Invalid input. Please enter a valid email address.");
+            }
+        }
+
 
             // For Program
             String newProgram;
@@ -989,10 +1284,18 @@ class EnrollmentSystem {
             // Update student information
                 student.setFirstName(newFirstName);
                 student.setLastName(newLastName);
-                student.getMiddleInitial();
+                student.setMiddleInitial(newMiddleInitial);
                 student.setAge(newAge);
+                student.setBday(newBirthday);
+                student.setAddress(newAddress);
                 student.setPreviousSchool(newPreviousSchool);
+                student.setMobileNumber(newMobileNumber);
                 student.setEmail(newEmail);
+                student.setGuardianFirstName(newGuardianFirstName);
+                student.setGuardianLastName(newGuardianLastName);
+                student.setGuardianMiddleInitial(newGuardianMiddleInitial);
+                student.setGuardianNumber(newGuardianNumber);
+                student.setGuardianEmail(newGuardianEmail);
                 student.setProgram(newProgram);
 
                 System.out.println("Student information updated successfully.");
@@ -1026,8 +1329,17 @@ class EnrollmentSystem {
         System.out.println("Last Name: " + student.getLastName());
         System.out.println("Middle Initial: " + student.getMiddleInitial());
         System.out.println("Age: " + student.getAge());
+        System.out.println("Birth day: " + student.getBday());
+        System.out.println("Address: " + student.getAddress());
         System.out.println("Previous School: " + student.getPreviousSchool());
+        System.out.println("Mobile Number: " + student.getMobileNumber());
         System.out.println("Email: " + student.getEmail());
+        System.out.println("Guardian's First Name: " + student.getGuardianFirstName());
+        System.out.println("Guardian's Last Name: " + student.getGuardianLastName());
+        System.out.println("Guardian's Middle Initial: " + student.getGuardianMiddleInitial());
+        System.out.println("Guardian's Mobile Number: " + student.getGuardianNumber());
+        System.out.println("Guardian's Email: " + student.getGuardianEmail());
+        System.out.println("Enrollment Type: " + student.getEnrollmentType());
         System.out.println("Program: " + student.getProgram());
         }
 
@@ -1046,8 +1358,17 @@ class EnrollmentSystem {
         System.out.println("Last Name: " + studentToRemove.getLastName());
         System.out.println("Middle Initial: " + studentToRemove.getMiddleInitial());
         System.out.println("Age: " + studentToRemove.getAge());
+        System.out.println("Birth day: " + studentToRemove.getBday());
+        System.out.println("Address: " + studentToRemove.getAddress());
         System.out.println("Previous School: " + studentToRemove.getPreviousSchool());
+        System.out.println("Mobile Number: " + studentToRemove.getMobileNumber());
         System.out.println("Email: " + studentToRemove.getEmail());
+        System.out.println("Guardian's First Name: " + studentToRemove.getGuardianFirstName());
+        System.out.println("Guardian's Last Name: " + studentToRemove.getGuardianLastName());
+        System.out.println("Guardian's Middle Initial: " + studentToRemove.getGuardianMiddleInitial());
+        System.out.println("Guardian's Mobile Number: " + studentToRemove.getGuardianNumber());
+        System.out.println("Guardian's Email: " + studentToRemove.getGuardianEmail());
+        System.out.println("Enrollment Type: " + studentToRemove.getEnrollmentType());
         System.out.println("Program: " + studentToRemove.getProgram());
         System.out.println("Enrolled Subjects: " + studentSubjects.getOrDefault(studentIdToRemove, Collections.emptyList()));
         
@@ -1064,10 +1385,19 @@ class EnrollmentSystem {
             System.out.println("First Name: " + studentToRemove.getFirstName());
             System.out.println("Last Name: " + studentToRemove.getLastName());
             System.out.println("Middle Initial: " + studentToRemove.getMiddleInitial());
-            System.out.println("Age: " + removedStudent.getAge());
-            System.out.println("Previous School: " + removedStudent.getPreviousSchool());
-            System.out.println("Email: " + removedStudent.getEmail());
-            System.out.println("Program: " + removedStudent.getProgram());
+            System.out.println("Age: " + studentToRemove.getAge());
+            System.out.println("Birth day: " + studentToRemove.getBday());
+            System.out.println("Address: " + studentToRemove.getAddress());
+            System.out.println("Previous School: " + studentToRemove.getPreviousSchool());
+            System.out.println("Mobile Number: " + studentToRemove.getMobileNumber());
+            System.out.println("Email: " + studentToRemove.getEmail());
+            System.out.println("Guardian's First Name: " + studentToRemove.getGuardianFirstName());
+            System.out.println("Guardian's Last Name: " + studentToRemove.getGuardianLastName());
+            System.out.println("Guardian's Middle Initial: " + studentToRemove.getGuardianMiddleInitial());
+            System.out.println("Guardian's Mobile Number: " + studentToRemove.getGuardianNumber());
+            System.out.println("Guardian's Email: " + studentToRemove.getGuardianEmail());
+            System.out.println("Enrollment Type: " + studentToRemove.getEnrollmentType());
+            System.out.println("Program: " + studentToRemove.getProgram());
             System.out.println("Enrolled Subjects: " + studentSubjects.getOrDefault(studentIdToRemove, Collections.emptyList()));
         } else {
             System.out.println("Removal canceled by user.");
